@@ -23,3 +23,4 @@ table {border-collapse: collapse;}
 body {font-family: 'Kite One', sans-serif;}
 
 #timetable .break-lunch {text-align:center; background-color: #A7C942}
+.daytitle {text-align: center; font-family: 'Englebert', sans-serif; font-size: 3em;}

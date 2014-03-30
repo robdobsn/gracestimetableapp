@@ -2,18 +2,37 @@
 var Timetable;
 
 Timetable = (function() {
-  function Timetable() {
+  function Timetable(theweek, weekDays) {
+    this.theweek = theweek;
+    this.weekDays = weekDays;
     this.periodIds = ["period1", "period2", "period3", "period4", "period5", "period7", "period8", "period9", "after-school"];
   }
 
-  Timetable.prototype.setDay = function(dayInfo) {
-    var i, subject, _i, _len, _results;
-    _results = [];
+  Timetable.prototype.setDay = function(dayIdx) {
+    var dayInfo, i, subject, _i, _len;
+    this.dayIdx = dayIdx;
+    dayInfo = this.theweek[dayIdx];
     for (i = _i = 0, _len = dayInfo.length; _i < _len; i = ++_i) {
       subject = dayInfo[i];
-      _results.push(this.showPeriod(this.periodIds[i], this.periodIds[i + 1], subject, dayInfo[i + 1]));
+      this.showPeriod(this.periodIds[i], this.periodIds[i + 1], subject, dayInfo[i + 1]);
     }
-    return _results;
+    return $(".daytitle").text(this.weekDays[dayIdx]);
+  };
+
+  Timetable.prototype.nextDay = function() {
+    this.dayIdx = this.dayIdx + 1;
+    if (this.dayIdx === 5) {
+      this.dayIdx = 4;
+    }
+    return this.setDay(this.dayIdx);
+  };
+
+  Timetable.prototype.prevDay = function() {
+    this.dayIdx = this.dayIdx - 1;
+    if (this.dayIdx === -1) {
+      this.dayIdx = 0;
+    }
+    return this.setDay(this.dayIdx);
   };
 
   Timetable.prototype.showPeriod = function(id, nextId, subject, nextSubject) {
@@ -21,6 +40,9 @@ Timetable = (function() {
     if (subject === nextSubject) {
       $("#" + id).attr("rowspan", "2");
       return $("#" + nextId).hide();
+    } else {
+      $("#" + id).attr("rowspan", "1");
+      return $("#" + nextId).show();
     }
   };
 
@@ -29,13 +51,20 @@ Timetable = (function() {
 })();
 
 $(document).ready(function() {
-  var friday, monday, thursday, timetable, tuesday, wednesday, week;
-  timetable = new Timetable();
+  var friday, monday, thursday, timetable, tuesday, wednesday, week, weekDayNames;
   monday = ["English", "Biology", "Biology", "Maths", "Maths", "German", "Art & Design", "Art & Design", "Ice Skating"];
-  tuesday = ["Biology", "History", "Maths"];
-  wednesday = ["Biology", "History", "Maths"];
-  thursday = ["Biology", "History", "Maths"];
-  friday = ["Biology", "History", "Maths"];
+  tuesday = ["Citizenship", "Geography", "Geography", "Physics", "Physics", "Maths", "German", "English", "Free Time"];
+  wednesday = ["P & R", "P & R", "Music", "PE", "PE", "Maths", "Physics", "Physics", "Riding"];
+  thursday = ["German", "Music", "Music", "English", "English", "Art & Design", "Art & Design", "Hockey", "Hockey"];
+  friday = ["Geography", "Geography", "Computing", "Maths", "English", "Biology", "Biology", "German", "Debating"];
   week = [monday, tuesday, wednesday, thursday, friday];
-  return timetable.setDay(monday);
+  weekDayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  timetable = new Timetable(week, weekDayNames);
+  timetable.setDay(0);
+  $("#timetable").on("swiperight", function() {
+    return timetable.nextDay();
+  });
+  return $("#timetable").on("swipeleft", function() {
+    return timetable.prevDay();
+  });
 });
