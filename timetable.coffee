@@ -21,20 +21,22 @@ class Timetable
 	showPeriod: (id, nextId, subject, nextSubject) ->
 		$("#" + id).text(subject)
 		if (subject == nextSubject)
+			$("#" + id).attr("class", "alt")
 			$("#" + id).attr("rowspan", "2")
 			$("#" + nextId).hide()
 		else
 			$("#" + id).attr("rowspan", "1")
 			$("#" + nextId).show()
+			$("#" + id).attr("class", "")
 
 $(document).ready ->
 
 
-	monday = [ "English", "Biology", "Biology", "Maths", "Maths", "German", "Art & Design", "Art & Design", "Ice Skating" ]
+	monday = [ "English", "Biology", "Biology", "Maths", "Maths", "German", "Art & Design", "Art & Design", "Free Time" ]
 	tuesday = [ "Citizenship", "Geography", "Geography", "Physics", "Physics", "Maths", "German", "English", "Free Time" ]
 	wednesday = [ "P & R", "P & R", "Music", "PE", "PE", "Maths", "Physics", "Physics", "Riding" ]
-	thursday = [ "German", "Music", "Music", "English", "English", "Art & Design", "Art & Design", "Hockey", "Hockey" ]
-	friday = [ "Geography", "Geography", "Computing", "Maths", "English", "Biology", "Biology", "German", "Debating" ]
+	thursday = [ "German", "Music", "Music", "English", "English", "Art & Design", "Art & Design", "Tennis", "Tennis" ]
+	friday = [ "Geography", "Geography", "Computing", "Maths", "English", "Biology", "Biology", "German", "Free Time" ]
 
 	week = [ monday, tuesday, wednesday, thursday, friday ]
 	weekDayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
@@ -42,8 +44,8 @@ $(document).ready ->
 	timetable = new Timetable(week, weekDayNames)
 	timetable.setDay(0)
 
-	$("#timetable").on "swiperight", ->
+	$("#timetable").on "swipeleft", ->
 		timetable.nextDay()
     	
-	$("#timetable").on "swipeleft", ->
+	$("#timetable").on "swiperight", ->
 		timetable.prevDay()
