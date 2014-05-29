@@ -18,9 +18,14 @@ border: 1px solid #98bf21;
 padding: 3px 7px 2px 7px;
 }
 
+#timetable {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 table {border-collapse: collapse;}
 
 body {font-family: 'Kite One', sans-serif;}
 
 #timetable .break-lunch {text-align:center; background-color: #A7C942}
-.daytitle {text-align: center; font-family: 'Englebert', sans-serif; font-size: 3em;}
+.daytitle {text-align: center; font-family: 'Englebert', sans-serif; font-size: 3em; margin-top: 20px; padding-top: 20px; padding-bottom: 10px; }
