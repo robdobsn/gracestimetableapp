@@ -62,21 +62,29 @@
     }
 
     Booklist.prototype.showbooks = function(dayInfo) {
-      var book, i, subject, _i, _len, _results;
+      var book, i, prevSubject, subject, _i, _len, _results;
+      $('#booklist').empty();
+      prevSubject = "";
       _results = [];
       for (i = _i = 0, _len = dayInfo.length; _i < _len; i = ++_i) {
         subject = dayInfo[i];
-        if (subject in this.thebooks) {
-          _results.push((function() {
-            var _j, _len1, _ref, _results1;
-            _ref = this.thebooks[subject];
-            _results1 = [];
-            for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-              book = _ref[_j];
-              _results1.push(this.showbook(book));
-            }
-            return _results1;
-          }).call(this));
+        if (subject !== prevSubject) {
+          prevSubject = subject;
+          if (subject in this.thebooks) {
+            $('#booklist').append("<div class = 'subject'> " + subject + " </div>");
+            _results.push((function() {
+              var _j, _len1, _ref, _results1;
+              _ref = this.thebooks[subject];
+              _results1 = [];
+              for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+                book = _ref[_j];
+                _results1.push(this.showbook(book));
+              }
+              return _results1;
+            }).call(this));
+          } else {
+            _results.push(void 0);
+          }
         } else {
           _results.push(void 0);
         }
@@ -85,7 +93,7 @@
     };
 
     Booklist.prototype.showbook = function(book) {
-      return $('#booklist').append(book);
+      return $('#booklist').append("<div class = 'book'> " + book + " </div>");
     };
 
     return Booklist;
@@ -93,13 +101,13 @@
   })();
 
   $(document).ready(function() {
-    var booklist, books, friday, monday, thursday, timetable, tuesday, wednesday, week, weekDayNames;
-    monday = ["English", "Biology", "Biology", "Maths", "Maths", "German", "Art & Design", "Art & Design", "Free Time"];
-    tuesday = ["Citizenship", "Geography", "Geography", "Physics", "Physics", "Maths", "German", "English", "Free Time"];
-    wednesday = ["P & R", "P & R", "Music", "PE", "PE", "Maths", "Physics", "Physics", "Riding"];
-    thursday = ["German", "Music", "Music", "English", "English", "Art & Design", "Art & Design", "Tennis", "Tennis"];
-    friday = ["Geography", "Geography", "Computing", "Maths", "English", "Biology", "Biology", "German", "Free Time"];
-    week = [monday, tuesday, wednesday, thursday, friday];
+    var booklist, books, fridayLessons, mondayLessons, thursdayLessons, timetable, tuesdayLessons, wednesdayLessons, week, weekDayNames;
+    mondayLessons = ["English", "Biology", "Biology", "Maths", "Maths", "German", "Art & Design", "Art & Design", "Free Time"];
+    tuesdayLessons = ["Citizenship", "Geography", "Geography", "Physics", "Physics", "Maths", "German", "English", "Free Time"];
+    wednesdayLessons = ["P & R", "P & R", "Music", "PE", "PE", "Maths", "Physics", "Physics", "Riding"];
+    thursdayLessons = ["German", "Music", "Music", "English", "English", "Art & Design", "Art & Design", "Tennis", "Tennis"];
+    fridayLessons = ["Geography", "Geography", "Computing", "Maths", "English", "Biology", "Biology", "German", "Free Time"];
+    week = [mondayLessons, tuesdayLessons, wednesdayLessons, thursdayLessons, fridayLessons];
     weekDayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
     books = {
       "English": ["Lined Paper", "Roll of Thunder, Hear My Cry"],

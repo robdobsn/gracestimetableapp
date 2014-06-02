@@ -34,23 +34,27 @@ class Booklist
 	constructor: (@theweek, @thebooks) ->
 
 	showbooks: (dayInfo) ->
+		$('#booklist').empty()
+		prevSubject = ""
 		for subject, i in dayInfo
-			if subject of @thebooks
-				@showbook book for book in @thebooks[subject]
+			if subject isnt prevSubject
+				prevSubject = subject
+				if subject of @thebooks
+					$('#booklist').append ("""<div class = 'subject'> #{subject} </div>""")
+					@showbook book for book in @thebooks[subject]
 
 	showbook: (book) ->
-		$('#booklist').append (book)
+		$('#booklist').append ("""<div class = 'book'> #{book} </div>""")
 
 $(document).ready ->
 
+	mondayLessons = [ "English", "Biology", "Biology", "Maths", "Maths", "German", "Art & Design", "Art & Design", "Free Time" ]
+	tuesdayLessons = [ "Citizenship", "Geography", "Geography", "Physics", "Physics", "Maths", "German", "English", "Free Time" ]
+	wednesdayLessons = [ "P & R", "P & R", "Music", "PE", "PE", "Maths", "Physics", "Physics", "Riding" ]
+	thursdayLessons = [ "German", "Music", "Music", "English", "English", "Art & Design", "Art & Design", "Tennis", "Tennis" ]
+	fridayLessons = [ "Geography", "Geography", "Computing", "Maths", "English", "Biology", "Biology", "German", "Free Time" ]
 
-	monday = [ "English", "Biology", "Biology", "Maths", "Maths", "German", "Art & Design", "Art & Design", "Free Time" ]
-	tuesday = [ "Citizenship", "Geography", "Geography", "Physics", "Physics", "Maths", "German", "English", "Free Time" ]
-	wednesday = [ "P & R", "P & R", "Music", "PE", "PE", "Maths", "Physics", "Physics", "Riding" ]
-	thursday = [ "German", "Music", "Music", "English", "English", "Art & Design", "Art & Design", "Tennis", "Tennis" ]
-	friday = [ "Geography", "Geography", "Computing", "Maths", "English", "Biology", "Biology", "German", "Free Time" ]
-
-	week = [ monday, tuesday, wednesday, thursday, friday ]
+	week = [ mondayLessons, tuesdayLessons, wednesdayLessons, thursdayLessons, fridayLessons ]
 	weekDayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
 	books = {
