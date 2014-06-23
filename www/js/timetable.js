@@ -8,6 +8,7 @@
       this.weekDays = weekDays;
       this.theBooklist = theBooklist;
       this.periodIds = ["period1", "period2", "period3", "period4", "period5", "period7", "period8", "period9", "after-school"];
+      this.periodTimes = [9.0, 9 + 40 / 60, 10 + 20 / 60, 11 + 15 / 60, 11 + 55 / 60, 13 + 15 / 60, 13 + 55 / 60, 14 + 35 / 60, 15 + 15 / 60];
     }
 
     Timetable.prototype.setDay = function(dayIdx) {
@@ -49,6 +50,11 @@
         $("#" + nextId).show();
         return $("#" + id).attr("class", "");
       }
+    };
+
+    Timetable.prototype.subjecttime = function() {
+      var d;
+      return d = new Date();
     };
 
     return Timetable;
@@ -120,9 +126,19 @@
     $("#timetable").on("swipeleft", function() {
       return timetable.nextDay();
     });
-    return $("#timetable").on("swiperight", function() {
+    $("#timetable").on("swiperight", function() {
       return timetable.prevDay();
     });
+    $("#dialog-message").dialog({
+      autoOpen: false,
+      modal: true,
+      buttons: {
+        "Ok": function() {
+          return $(this).dialog("close");
+        }
+      }
+    });
+    return setInterval(this.timetable.subjecttime, 1 * 60 * 1000);
   });
 
 }).call(this);

@@ -1,6 +1,7 @@
 class Timetable
 	constructor: (@theweek, @weekDays, @theBooklist) ->
 		@periodIds = [ "period1", "period2", "period3", "period4", "period5", "period7", "period8", "period9", "after-school" ]
+		@periodTimes = [ 9.0, 9 + 40/60, 10 + 20/60, 11 + 15/60, 11 + 55/60, 13 + 15/60, 13 + 55/60, 14 + 35/60, 15 + 15/60]
 		
 	setDay: (@dayIdx) ->
 		dayInfo = @theweek[dayIdx]
@@ -29,6 +30,10 @@ class Timetable
 			$("#" + id).attr("rowspan", "1")
 			$("#" + nextId).show()
 			$("#" + id).attr("class", "")
+
+	subjecttime: ->
+		d = new Date()
+		
 
 class Booklist
 	constructor: (@theweek, @thebooks) ->
@@ -73,3 +78,13 @@ $(document).ready ->
     	
 	$("#timetable").on "swiperight", ->
 		timetable.prevDay()
+
+	$( "#dialog-message" ).dialog
+		autoOpen: false
+		modal: true
+		buttons: 
+			"Ok": -> 
+				$(this).dialog("close")
+
+	setInterval @timetable.subjecttime, 1*60*1000
+   

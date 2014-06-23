@@ -30,4 +30,4 @@ body {font-family: 'Kite One', sans-serif;}
 #timetable .break-lunch {text-align:center; background-color: #A7C942}
 .daytitle {text-align: center; font-family: 'Englebert', sans-serif; font-size: 3em; margin-top: 20px; padding-top: 20px; padding-bottom: 10px; }
 .book {text-align: center; font-family: 'Englebert', sans-serif;}
-.subject {text-align: center; font-family: 'Englebert', sans-serif; color: #678315;}
+.subject {text-align: center; font-family: 'Englebert', sans-serif; color: #678315; font-weight: bold; padding-top: 10px}
