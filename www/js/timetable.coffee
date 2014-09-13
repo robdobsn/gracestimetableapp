@@ -31,9 +31,26 @@ class Timetable
 			$("#" + nextId).show()
 			$("#" + id).attr("class", "")
 
-	subjecttime: ->
-		d = new Date()
-		
+	checkLessonStarting: () =>
+		curtime = new Date()
+		curHours = curtime.getHours() + curtime.getMinutes() /60
+		for periodTime, periodIdx in @periodTimes
+			testHours = periodTime - 5/60
+			differenceInTime = Math.abs(curHours - testHours)
+			if differenceInTime < 1/3600
+				@notifyBooksNeeded(curtime, periodIdx)
+		setTimeout timetable.checkLessonStarting, 1*30*1000 
+		return
+
+	notifyBooksNeeded: (curtime, periodIdx) ->
+		curday = curtime.getDay()
+		if curday == 0 or curday == 6
+			return
+		curday = curday - 1
+		@setDay(curday)
+		lessonName = @theweek[curday][periodIdx]
+		$(".lesson-name") .text (lessonName)
+		$( "#dialog-message" ).dialog("open")
 
 class Booklist
 	constructor: (@theweek, @thebooks) ->
@@ -63,9 +80,20 @@ $(document).ready ->
 	weekDayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
 	books = {
-		"English": ["Lined Paper", "Roll of Thunder, Hear My Cry"],
-		"Maths": ["Jotter", "SSM R2 Textbook"],
-		"German": ["Work Jotter", "Dictionary", "ECHO 2 Workbook", "ECHO 2 Textbook", "Vocab Jotter"],
+		"English": ["Lined Paper", "Roll of Thunder, Hear My Cry", "English Folder & Booklets", "Homework"],
+		"Maths": ["Jotter", "SSM R2 Textbook", "Homework"],
+		"German": ["Work Jotter", "Dictionary", "ECHO 2 Workbook", "ECHO 2 Textbook", "Vocab Jotter", "Homework"],
+		"Biology": ["Biology Folder", "Homework"],
+		"Physics": ["Longman Physics Textbook", "Physics Jotter", "Homework"],
+		"Art & Design": ["Art Jotter", "Homework"],
+		"Citizenship": ["Organization Booklet", "UV Detector Beads"],
+		"Geography": ["Geog Scot 1 Textbook", "Geography Jotter", "Homework"],
+		"PE": ["PE Kit"],
+		"P & R": ["P & R Jotter", "RME for Scotland Textbook", "Homework"],
+		"Music": ["Student Music Workbook 1", "Student Music Workbook 2", "Homework"],
+		"Riding": ["Helmet, Body Protector", "Boots, Chaps", "Gloves", "Change of Clothes & Jodhpurs"],
+		"Tennis": ["PE Kit", "Tennis Racquet"],
+		"Computing": ["Computing Folder", "Flash Drive", "Website", "Homework"],
 		}
 
 	booklist = new Booklist(week, books)
@@ -86,5 +114,11 @@ $(document).ready ->
 			"Ok": -> 
 				$(this).dialog("close")
 
-	setInterval @timetable.subjecttime, 1*60*1000
+
+
+	 #$("#opener").click ->
+	 #	timetable.notifyBooksNeeded(new Date(), 6)
+	 #	$( "#dialog-message" ).dialog("open")
+
+	timetable.checkLessonStarting()
    
